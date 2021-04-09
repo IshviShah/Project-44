@@ -15,9 +15,12 @@ function spawnGhost(){
 
 }
 function spawnLady(){
-    if(frameCount %900 === 0){
-        lady = createSprite(Math.round(random(windowWidth/4,windowWidth-100)),Math.round(random(windowHeight/4,windowHeight-100))); 
+    if(frameCount % 900 === 0){
+        lady = createSprite(Math.round(random(windowWidth/8,windowWidth/3-100)),Math.round(random(windowHeight/3,windowHeight-100))); 
         lady.addImage(ghostImg4);
+        lady.scale = 0.5;
+        lady.velocityX = 2;
+        lady.lifetime = 150;
         ladyGroup.add(lady);
     }
 }
