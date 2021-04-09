@@ -1,7 +1,7 @@
 var houseImg;
 var startButton;
 var start;
-var stair1Img;
+var stair1Img, stair2Img;
 var back;
 var playerImg, player;
 var gameState ;
@@ -9,6 +9,10 @@ var ghostImg1, ghostImg2, ghostImg3,ghostImg4;
 var ghost, ghostGroup;
 var ghostArray;
 var lady, ladyGroup;
+var room1Img, room2Img, room3Img, room4Img;
+var keyImg, key, keyGroup;
+var keyCount = 0;
+var roomArray;
 
 function preload() {
   houseImg = loadImage("Images/house1.jpg");
@@ -19,6 +23,12 @@ function preload() {
   ghostImg2 = loadImage("Images/ghost2.png");
   ghostImg3 = loadImage("Images/ghost3.png");
   ghostImg4 = loadImage("Images/lady1.png");
+  room1Img = loadImage("Images/room1.jpeg");
+  room2Img = loadImage("Images/room2.jpeg");
+  room3Img = loadImage("Images/room3.jpeg");
+  room4Img = loadImage("Images/hall.jpeg");
+  keyImg = loadImage("Images/key.png");
+  stair2Img = loadImage("Images/stair2.jpeg");
 
 }
 function setup() {
@@ -27,7 +37,7 @@ function setup() {
   start.addImage(startButton);
   start.scale = 0.5;
 
-  back = createSprite(windowWidth / 2, windowHeight / 2);
+  back = createSprite(windowWidth / 2, windowHeight / 2, width,height);
   back.addImage(stair1Img);
   back.visible = false;
   back.scale = 2;
@@ -38,13 +48,16 @@ function setup() {
   player.scale = 2;
 
   ghostGroup = createGroup();
+  ladyGroup = createGroup();
+  keyGroup = createGroup();
 
   ghostArray = [ghostImg1,ghostImg2,ghostImg3];
-
+  roomArray = [room1Img,room2Img,room3Img,room4Img,stair2Img];
 }
 
 function draw() {
   background(houseImg);
+
 
 
   fill("red");
@@ -67,12 +80,64 @@ function draw() {
     }
 
     if(gameState===0){
-    if (keyIsDown(UP_ARROW)) {
-      player.y = player.y - 5;
-    }
+      if (keyIsDown(UP_ARROW)) {
+        player.y = player.y - 5;
+      }
+      if (keyIsDown(DOWN_ARROW)) {
+        player.y = player.y + 5;
+      }
 
-    spawnGhost();
-  }
-  
+      if(keyGroup.isTouching(player)){
+        keyCount++;
+      }
+
+      //change room
+      //var rand = Math.round(random(0,3));
+      var rand = 4;
+      if(player.y < windowHeight/4){
+        
+        if(rand === 0){
+          back.scale = 3;
+          player.y  = height- 100;
+        }
+        if(rand === 1){
+          back.scale = 3;
+          player.y  = height- 100;
+        }
+        if(rand === 2){
+          back.scale = 2.39;
+          player.y  = height- 100;
+          player.x = width/2 - 150;
+          player.scale = 2.5;
+        }
+        if(rand === 3){
+         back.scale = 1.18;
+          player.y  = height- 100;
+        }
+        if(rand === 4){
+          back.scale = 1.13;
+           player.y  = height- 100;
+           player.x = width/2 + 50;
+           player.scale = 2.8;
+         }
+        
+        back.addImage(roomArray[4]);
+      }
+      
+      spawnGhost();
+      spawnLady();
+      spawnKey();
+    }
+    
   drawSprites();
+}
+
+function spawnKey(){
+  if(frameCount % 1000 === 0){
+    key = createSprite(width / 2, height/4);
+    key.addImage(keyImg);
+    key.scale = 0.2;
+    key.lifetime = 40;
+    keyGroup.add(key);
+  }
 }
