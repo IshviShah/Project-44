@@ -3,10 +3,10 @@ function spawnGhost(){
         ghost = createSprite(Math.round(random(windowWidth/4,windowWidth-100)),Math.round(random(windowHeight/4,windowHeight-100)));
         var rand = Math.round(random(0,2));
         if(rand === 0 ){
-            ghost.scale = 1.5;
+            ghost.scale = 2;
         }
         else if(rand === 1 ){
-            ghost.scale = 2;
+            ghost.scale = 2.5;
         }
         ghost.addImage(ghostArray[rand]);
         ghostGroup.add(ghost);
@@ -18,7 +18,7 @@ function spawnLady(){
     if(frameCount % 900 === 0){
         lady = createSprite(Math.round(random(windowWidth/8,windowWidth/3-100)),Math.round(random(windowHeight/3,windowHeight-100))); 
         lady.addImage(ghostImg4);
-        lady.scale = 0.5;
+        lady.scale = 0.7;
         lady.velocityX = 2;
         lady.lifetime = 150;
         ladyGroup.add(lady);
