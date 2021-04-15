@@ -10,7 +10,7 @@ var ghost, ghostGroup;
 var ghostArray;
 var lady, ladyGroup;
 var room1Img, room2Img, room3Img, room4Img;
-var keyImg, key=0;
+var keyImg, key1=0;
 var keyCount = 0;
 var roomArray;
 
@@ -26,7 +26,7 @@ function preload() {
   room1Img = loadImage("Images/room1.jpeg");
   room2Img = loadImage("Images/room2.jpeg");
   room3Img = loadImage("Images/room3.jpeg");
-  //room4Img = loadImage("Images/hall.jpeg");
+  room4Img = loadImage("Images/room4.jpeg");
   keyImg = loadImage("Images/key.png");
   stair2Img = loadImage("Images/stair2.jpeg");
 
@@ -52,7 +52,7 @@ function setup() {
   //keyGroup = createGroup();
 
   ghostArray = [ghostImg1,ghostImg2,ghostImg3];
-  roomArray = [room1Img,room2Img,room3Img,stair2Img];
+  roomArray = [room1Img,room2Img,room3Img,stair2Img,room4Img];
 }
 
 function draw() {
@@ -83,19 +83,23 @@ function draw() {
       spawnKey();
 
       if (keyIsDown(UP_ARROW)) {
-        player.y = player.y - 3;
+        player.y = player.y - 8;
       }
       if (keyIsDown(DOWN_ARROW)) {
-        player.y = player.y + 3;
+        player.y = player.y + 2;
+      }
+      console.log(key1);
+      if(frameCount>200){
+        if(player.isTouching(key1)){
+          keyCount++;
+          console.log(keyCount);
+          key1.lifetime = 10;
+        }
       }
 
-      /*if(key.isTouching(player)){
-        keyCount++;
-      }*/
-
       //change room
-      //var rand = Math.round(random(0,3));
-      var rand = 2;
+      //var rand = Math.round(random(0,4));
+      var rand = 3;
       if(player.y < windowHeight/4){
         switch(rand){
           case 0:{
@@ -116,7 +120,8 @@ function draw() {
             player.y  = height- 100;
             player.x = width/2 - 150;
             player.scale = 1;
-            //keyGroup.pointToEach(width/4 - 400,height/4);
+            //keyGroup.get(0).x =78;
+            key1.x = 550;
             break;
           }
           
@@ -125,18 +130,32 @@ function draw() {
             player.y  = height- 100;
             player.x = width/2 + 50;
             player.scale = 1.2;
+            key1.y = 105;
+            //console.log(height/4);
+            break;
+          }
+
+          case 4:{
+            back.scale = 2.5;
+            player.y  = height- 100;
+            player.x = width/2 + 350;
+            player.scale = 0.7;
+            key1.x = 1020;
+            //console.log(key1);
+            
             break;
           }
         }
         
-        back.addImage(roomArray[2]);
+        back.addImage(roomArray[3]);
 
-        console.log(rand);
+        //console.log(rand);
       }
       
 
       spawnGhost();
       spawnLady();
+      
     }
     
   drawSprites();
@@ -144,10 +163,11 @@ function draw() {
 
 function spawnKey(){
   if(frameCount % 100 === 0){
-    key = createSprite(width/2, height/4);
-    key.addImage(keyImg);
-    key.scale = 0.2;
-    key.lifetime = 40;
+    key1 = createSprite(width/2, height/4);
+    key1.addImage(keyImg);
+    key1.scale = 0.2;
+    //key1.lifetime = 80;
+    return key1;
     //keyGroup.add(key);
   }
 }
