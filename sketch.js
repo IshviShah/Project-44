@@ -10,9 +10,12 @@ var ghost, ghostGroup;
 var ghostArray;
 var lady, ladyGroup;
 var room1Img, room2Img, room3Img, room4Img;
-var keyImg, key1=0;
+var keyImg, key1=0, keyGroup;
 var keyCount = 0;
 var roomArray;
+var ghostSound, ladySound, openingSound;
+
+
 
 function preload() {
   houseImg = loadImage("Images/house1.jpg");
@@ -29,6 +32,11 @@ function preload() {
   room4Img = loadImage("Images/room4.jpeg");
   keyImg = loadImage("Images/key.png");
   stair2Img = loadImage("Images/stair2.jpeg");
+
+  ghostSound = loadSound("ghost.mp3");
+  ladySound = loadSound("lady.mp3");
+  openingSound = loadSound("opening.mp3");
+
 
 }
 function setup() {
@@ -49,7 +57,7 @@ function setup() {
 
   ghostGroup = createGroup();
   ladyGroup = createGroup();
-  //keyGroup = createGroup();
+  keyGroup = createGroup();
 
   ghostArray = [ghostImg1,ghostImg2,ghostImg3];
   roomArray = [room1Img,room2Img,room3Img,stair2Img,room4Img];
@@ -69,7 +77,7 @@ function draw() {
   textSize(30);
   text("RULES :- ", width - 200, height - 400);
   textSize(20);
-  text("1. You have to collect three keys \n by touching them and exit the house.\n2. Do not let any creature touch you.\n 3. Use ↑ and ↓ to move the player.", width - 400, height - 350);
+  text("1. You have to collect three keys \n by touching them and exit the house.\n2. Do not let the lady ghost touch you.\n 3. Use ↑ and ↓ to move the player.", width - 400, height - 350);
 
   
     if (mousePressedOver(start)) {
@@ -77,29 +85,43 @@ function draw() {
       start.visible = false;
       player.visible = true;
       gameState = 0;
+      openingSound.play();
     }
 
     if(gameState===0){
       spawnKey();
 
       if (keyIsDown(UP_ARROW)) {
-        player.y = player.y - 8;
+        player.y = player.y - 2;
       }
       if (keyIsDown(DOWN_ARROW)) {
         player.y = player.y + 2;
       }
-      console.log(key1);
+      //console.log(key1);
       if(frameCount>200){
-        if(player.isTouching(key1)){
+        if(keyGroup.isTouching(player)){
           keyCount++;
-          console.log(keyCount);
-          key1.lifetime = 10;
+          //console.log(keyCount);
+          //key1.lifetime = 10;
+          keyGroup.destroyEach();
         }
       }
+      if(ladyGroup.isTouching(player)){
+        gameState === 2;
+        textFont('Georgia');
+        text("GAME OVER",width / 2 - 200, height /2);
+        /*player.destroy();
+        keyGroup.destroyEach();
+        ghostGroup.destroyEach();
+        //ladyGroup.destroyEach();
+        back.addImage(houseImg);*/
+      }
+      
+      //if(player.y < windowHeight/4)
 
       //change room
-      //var rand = Math.round(random(0,4));
-      var rand = 3;
+      var rand = Math.round(random(0,4));
+      //var rand = 2;
       if(player.y < windowHeight/4){
         switch(rand){
           case 0:{
@@ -120,8 +142,13 @@ function draw() {
             player.y  = height- 100;
             player.x = width/2 - 150;
             player.scale = 1;
-            //keyGroup.get(0).x =78;
-            key1.x = 550;
+            if(keyGroup.size()>0){
+              for(var i=0; i<keyGroup.length; i++){
+                keyGroup.get(i).x =550;
+                console.log(keyGroup.get(i).x);
+              }
+            }
+            //key1.x = 550;
             break;
           }
           
@@ -130,7 +157,9 @@ function draw() {
             player.y  = height- 100;
             player.x = width/2 + 50;
             player.scale = 1.2;
-            key1.y = 105;
+            if(keyGroup.size()>0){
+              keyGroup.get(0).y =105;
+             }
             //console.log(height/4);
             break;
           }
@@ -140,16 +169,18 @@ function draw() {
             player.y  = height- 100;
             player.x = width/2 + 350;
             player.scale = 0.7;
-            key1.x = 1020;
+            if(keyGroup.size()>0){
+              keyGroup.get(0).x =1020;
+             }
             //console.log(key1);
             
             break;
           }
         }
         
-        back.addImage(roomArray[3]);
+        back.addImage(roomArray[rand]);
 
-        //console.log(rand);
+       
       }
       
 
@@ -159,15 +190,36 @@ function draw() {
     }
     
   drawSprites();
+
+  if(gameState === 0){
+    textSize(30);
+    fill("orange")
+    text("Keys Collected :  "+keyCount,width/4-300, height/5-100);
+
+    
+  }
+  if(keyCount === 3){
+    gameState = 1;
+    textSize(95);
+    textFont('Georgia');
+    text("YOU WIN!",width / 2 - 200, height /2);
+    player.destroy();
+    keyGroup.destroyEach();
+    ghostGroup.destroyEach();
+    ladyGroup.destroyEach();
+    back.addImage(houseImg);
+  }
+  
 }
 
 function spawnKey(){
-  if(frameCount % 100 === 0){
+  if(frameCount % 300 === 0){
     key1 = createSprite(width/2, height/4);
+    //console.log("bj"+key1.x);
     key1.addImage(keyImg);
     key1.scale = 0.2;
-    //key1.lifetime = 80;
-    return key1;
-    //keyGroup.add(key);
+    key1.lifetime = 80;
+    //return key1;
+    keyGroup.add(key1)
   }
 }
