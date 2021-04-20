@@ -20,6 +20,8 @@ function spawnLady(){
         lady = createSprite(Math.round(random(windowWidth/8,windowWidth/3-100)),Math.round(random(windowHeight/3,windowHeight-100))); 
         lady.addImage(ghostImg4);
         ladySound.play();
+        lady.setCollider("rectangle",0,0,lady.width/3,lady.height); 
+        lady.debug = true; 
         lady.scale = 0.7;
         lady.velocityX = 2;
         lady.lifetime = 160;
