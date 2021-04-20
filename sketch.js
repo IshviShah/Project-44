@@ -107,14 +107,15 @@ function draw() {
         }
       }
       if(ladyGroup.isTouching(player)){
-        gameState === 2;
+        gameState = 2;
+        textSize(95);
         textFont('Georgia');
         text("GAME OVER",width / 2 - 200, height /2);
-        /*player.destroy();
+        player.destroy();
         keyGroup.destroyEach();
         ghostGroup.destroyEach();
-        //ladyGroup.destroyEach();
-        back.addImage(houseImg);*/
+        ladyGroup.destroyEach();
+        back.addImage(houseImg);
       }
       
       //if(player.y < windowHeight/4)
