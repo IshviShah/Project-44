@@ -1,5 +1,5 @@
 function spawnGhost(){
-    if(frameCount %700 === 0){
+    if(frameCount %600 === 0){
         ghost = createSprite(Math.round(random(windowWidth/4,windowWidth-100)),Math.round(random(windowHeight/4,windowHeight-100)));
         var rand = Math.round(random(0,2));
         if(rand === 0 ){
@@ -16,12 +16,12 @@ function spawnGhost(){
 
 }
 function spawnLady(){
-    if(frameCount % 100 === 0){
+    if(frameCount % 700 === 0){
         lady = createSprite(Math.round(random(windowWidth/8,windowWidth/3-100)),Math.round(random(windowHeight/3,windowHeight-100))); 
         lady.addImage(ghostImg4);
         ladySound.play();
         lady.setCollider("rectangle",0,0,lady.width/3,lady.height); 
-        lady.debug = true; 
+        lady.debug = false; 
         lady.scale = 0.7;
         lady.velocityX = 2;
         lady.lifetime = 160;
