@@ -108,14 +108,7 @@ function draw() {
       }
       if(ladyGroup.isTouching(player)){
         gameState = 2;
-        textSize(95);
-        textFont('Georgia');
-        text("GAME OVER",width / 2 - 200, height /2);
-        player.destroy();
-        keyGroup.destroyEach();
-        ghostGroup.destroyEach();
-        ladyGroup.destroyEach();
-        back.addImage(houseImg);
+        
       }
       
       //if(player.y < windowHeight/4)
@@ -195,9 +188,7 @@ function draw() {
   if(gameState === 0){
     textSize(30);
     fill("orange")
-    text("Keys Collected :  "+keyCount,width/4-300, height/5-100);
-
-    
+    text("Keys Collected :  "+keyCount,width/4-300, height/5-100); 
   }
   if(keyCount === 3){
     gameState = 1;
@@ -210,7 +201,17 @@ function draw() {
     ladyGroup.destroyEach();
     back.addImage(houseImg);
   }
-  
+  if(gameState === 2){ 
+    textSize(95);
+    textFont('Georgia');
+    text("GAME OVER!",width / 2 - 100, height /2);
+    player.destroy();
+    keyGroup.destroyEach();
+    ghostGroup.destroyEach();
+    ladyGroup.destroyEach();
+    back.addImage(houseImg);
+
+  }
 }
 
 function spawnKey(){
